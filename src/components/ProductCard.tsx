@@ -36,63 +36,67 @@ const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   return (
-    <div className="card-luxury group relative overflow-hidden">
-      <Link to={`/product/${product.id}`}>
-        <div className="aspect-square overflow-hidden bg-muted">
+    <div className="card-luxury group relative overflow-hidden flex flex-col h-full">
+      <Link to={`/product/${product.id}`} className="flex flex-col h-full">
+        <div className="relative aspect-square overflow-hidden bg-muted">
           <img
             src={product.image}
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
+
+          {/* Hover Actions - moved over the image so they don't cover text */}
+          <div className="absolute top-3 right-3 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <Button
+              size="icon"
+              variant="secondary"
+              className="w-8 h-8 shadow-soft"
+              onClick={(e) => { e.preventDefault(); }}
+              aria-label="Add to wishlist"
+            >
+              <Heart className="h-4 w-4" />
+            </Button>
+            <Button
+              size="icon"
+              variant="secondary"
+              className="w-8 h-8 shadow-soft"
+              onClick={handleAddToCart}
+              aria-label="Add to cart"
+            >
+              <ShoppingCart className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
-        
-        <div className="p-6">
+
+        <div className="p-6 flex flex-col flex-1">
           <div className="mb-2">
             <span className="text-xs uppercase tracking-wide text-muted-foreground font-medium">
               {product.category}
             </span>
           </div>
-          
-          <h3 className="font-serif text-lg mb-2 group-hover:text-primary transition-colors">
+
+          <h3 className="font-serif text-lg mb-2 text-foreground group-hover:text-primary transition-colors">
             {product.name}
           </h3>
-          
+
           <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
             {product.description}
           </p>
-          
-          <div className="flex items-center justify-between">
+
+          <div className="flex items-center justify-between mt-auto mb-4">
             <span className="text-2xl font-semibold text-primary">
               ₹{product.price.toLocaleString()}
             </span>
           </div>
+
+          <Button
+            onClick={handleAddToCart}
+            className="w-full bg-primary hover:bg-primary-dark text-primary-foreground"
+          >
+            Add to Cart
+          </Button>
         </div>
       </Link>
-      
-      {/* Hover Actions */}
-      <div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <Button size="icon" variant="secondary" className="w-8 h-8 shadow-soft">
-          <Heart className="h-4 w-4" />
-        </Button>
-        <Button
-          size="icon"
-          variant="secondary"
-          className="w-8 h-8 shadow-soft"
-          onClick={handleAddToCart}
-        >
-          <ShoppingCart className="h-4 w-4" />
-        </Button>
-      </div>
-      
-      {/* Quick Add to Cart */}
-      <div className="absolute bottom-6 left-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-        <Button
-          onClick={handleAddToCart}
-          className="w-full bg-primary hover:bg-primary-dark text-white"
-        >
-          Add to Cart
-        </Button>
-      </div>
     </div>
   );
 };
