@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star, ShieldCheck, Truck, Heart } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
@@ -9,55 +11,35 @@ import necklaceImage from '@/assets/necklace-gold.jpg';
 import ringsImage from '@/assets/rings-collection.jpg';
 import earringsImage from '@/assets/earrings-pearl.jpg';
 
-const featuredProducts = [
-  {
-    id: '1',
-    name: 'Golden Bloom Necklace',
-    price: 2999,
-    image: necklaceImage,
-    category: 'necklaces',
-    description: 'Elegant gold necklace with intricate floral design'
-  },
-  {
-    id: '2', 
-    name: 'Gemstone Ring Collection',
-    price: 1599,
-    image: ringsImage,
-    category: 'rings',
-    description: 'Beautiful set of rings with precious gemstones'
-  },
-  {
-    id: '3',
-    name: 'Pearl Drop Earrings',
-    price: 899,
-    image: earringsImage,
-    category: 'earrings',
-    description: 'Classic pearl earrings with gold accents'
-  }
-];
-
 const testimonials = [
-  {
-    name: 'Priya Sharma',
-    rating: 5,
-    text: 'Absolutely stunning pieces! The quality is exceptional and the designs are so unique. I get compliments every time I wear them.',
-    location: 'Mumbai'
-  },
-  {
-    name: 'Anita Gupta',
-    rating: 5,
-    text: 'Isha creates the most beautiful handmade jewellery. Perfect for special occasions and the customer service is outstanding.',
-    location: 'Delhi'
-  },
-  {
-    name: 'Meera Patel',
-    rating: 5,
-    text: 'I ordered a custom necklace for my wedding and it was beyond my expectations. Truly a work of art!',
-    location: 'Ahmedabad'
-  }
+  { name: 'Priya Sharma', rating: 5, text: 'Absolutely stunning pieces! The quality is exceptional and the designs are so unique. I get compliments every time I wear them.', location: 'Mumbai' },
+  { name: 'Anita Gupta', rating: 5, text: 'Isha creates the most beautiful handmade jewellery. Perfect for special occasions and the customer service is outstanding.', location: 'Delhi' },
+  { name: 'Meera Patel', rating: 5, text: 'I ordered a custom necklace for my wedding and it was beyond my expectations. Truly a work of art!', location: 'Ahmedabad' },
 ];
 
 const Index = () => {
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase
+        .from('products')
+        .select('id, name, price, image_url, category, description')
+        .eq('featured', true)
+        .limit(3);
+      setFeaturedProducts(
+        (data ?? []).map((p) => ({
+          id: p.id,
+          name: p.name,
+          price: Number(p.price),
+          image: p.image_url || '',
+          category: p.category,
+          description: p.description || '',
+        }))
+      );
+    })();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
