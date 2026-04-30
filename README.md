@@ -14,7 +14,7 @@ Follow these steps:
 
 ```sh
 # Step 1: Clone the repository using the project's Git URL.
-git clone <_GIT_URL>
+git clone <GIT_URL>
 
 # Step 2: Navigate to the project directory.
 cd <PROJECT_NAME>
