@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { z } from 'zod';
+import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -7,39 +9,44 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 
+const schema = z.object({
+  name: z.string().trim().min(1).max(100),
+  email: z.string().trim().email().max(255),
+  phone: z.string().trim().max(30).optional().or(z.literal('')),
+  subject: z.string().trim().min(1).max(200),
+  message: z.string().trim().min(1).max(2000),
+});
+
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
+  const [busy, setBusy] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // For now, we'll show a toast about backend integration
-    toast({
-      title: "Message Received!",
-      description: "Thank you for your message. We'll get back to you soon! (Note: Email integration requires Supabase connection)",
+    const parsed = schema.safeParse(formData);
+    if (!parsed.success) {
+      toast({ title: 'Please check the form', description: parsed.error.errors[0].message, variant: 'destructive' });
+      return;
+    }
+    setBusy(true);
+    const { error } = await supabase.from('contact_submissions').insert({
+      name: parsed.data.name,
+      email: parsed.data.email,
+      phone: parsed.data.phone || null,
+      subject: parsed.data.subject,
+      message: parsed.data.message,
     });
-    
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: ''
-    });
+    setBusy(false);
+    if (error) {
+      toast({ title: 'Could not send message', description: error.message, variant: 'destructive' });
+      return;
+    }
+    toast({ title: 'Message sent!', description: "Thank you. We'll get back to you within 24 hours." });
+    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
   };
 
   return (
