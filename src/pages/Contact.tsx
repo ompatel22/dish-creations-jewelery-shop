@@ -149,8 +149,8 @@ const Contact = () => {
                   />
                 </div>
                 
-                <Button type="submit" className="w-full btn-hero">
-                  Send Message
+                <Button type="submit" disabled={busy} className="w-full btn-hero">
+                  {busy ? 'Sending...' : 'Send Message'}
                 </Button>
               </form>
             </div>
