@@ -114,7 +114,7 @@ const About = () => {
           <div className="space-y-2 text-muted-foreground">
             <p><strong className="text-foreground">Isha Patel</strong> - Founder & Designer</p>
             <p>📞 +91 9664780894</p>
-            <p>✉️ Patelishu2811@gmail.com</p>
+            <p>✉️ patelishu2811@gmail.com</p>
           </div>
         </div>
       </main>

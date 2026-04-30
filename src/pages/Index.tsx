@@ -57,8 +57,8 @@ const Index = () => {
         
         <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white mb-6 fade-in">
-            Handmade Jewellery to 
-            <span className="block text-gradient bg-gradient-to-r from-rose-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">
+            Handmade Jewellery to
+            <span className="block text-gradient bg-gradient-to-r from-rose-300 via-pink-300 to-purple-300 bg-clip-text text-transparent pb-6">
               Elevate Every Occasion
             </span>
           </h1>
@@ -240,7 +240,7 @@ const Index = () => {
               </Button>
             </Link>
             <Link to="/contact">
-              <Button variant="outline" className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-4">
+              <Button className="bg-white text-primary hover:bg-gray-100 text-lg px-8 py-4">
                 Custom Orders
               </Button>
             </Link>

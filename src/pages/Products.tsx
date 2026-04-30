@@ -47,7 +47,7 @@ const Products = () => {
     .filter(
       (p) =>
         p.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (selectedCategory === 'all' || p.category === selectedCategory)
+        (selectedCategory === 'all' || p.category.toLowerCase() === selectedCategory.toLowerCase())
     )
     .sort((a, b) => {
       if (sortBy === 'price-low') return a.price - b.price;

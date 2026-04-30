@@ -55,9 +55,14 @@ const Header = () => {
                     <Package className="h-4 w-4 mr-2" /> My Orders
                   </DropdownMenuItem>
                   {isAdmin && (
-                    <DropdownMenuItem onClick={() => navigate('/admin/orders')}>
-                      <Shield className="h-4 w-4 mr-2" /> Admin Dashboard
-                    </DropdownMenuItem>
+                    <>
+                      <DropdownMenuItem onClick={() => navigate('/admin/orders')}>
+                        <Shield className="h-4 w-4 mr-2" /> Admin Orders
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate('/admin/products')}>
+                        <Package className="h-4 w-4 mr-2" /> Manage Products
+                      </DropdownMenuItem>
+                    </>
                   )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>

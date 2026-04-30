@@ -17,6 +17,7 @@ import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import MyOrders from "./pages/MyOrders";
 import AdminOrders from "./pages/AdminOrders";
+import AdminProducts from "./pages/AdminProducts";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +47,10 @@ const App = () => (
               <Route
                 path="/admin/orders"
                 element={<ProtectedRoute requireAdmin><AdminOrders /></ProtectedRoute>}
+              />
+              <Route
+                path="/admin/products"
+                element={<ProtectedRoute requireAdmin><AdminProducts /></ProtectedRoute>}
               />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
