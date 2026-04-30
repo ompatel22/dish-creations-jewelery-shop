@@ -44,18 +44,24 @@ const Checkout = () => {
       return;
     }
     setBusy(true);
-    const orderPayload = {
-      user_id: user.id,
-      ...parsed.data,
-      address_line2: parsed.data.address_line2 || null,
-      notes: parsed.data.notes || null,
-      subtotal: totalPrice,
-      total: totalPrice,
-    };
-
+    const d = parsed.data;
     const { data: order, error: orderErr } = await supabase
       .from('orders')
-      .insert(orderPayload)
+      .insert({
+        user_id: user.id,
+        full_name: d.full_name,
+        email: d.email,
+        phone: d.phone,
+        address_line1: d.address_line1,
+        address_line2: d.address_line2 || null,
+        city: d.city,
+        state: d.state,
+        postal_code: d.postal_code,
+        country: d.country,
+        notes: d.notes || null,
+        subtotal: totalPrice,
+        total: totalPrice,
+      })
       .select()
       .single();
 
