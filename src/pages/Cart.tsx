@@ -1,20 +1,22 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
-import { toast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Cart = () => {
   const { items, updateQuantity, removeFromCart, totalPrice, clearCart } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleCheckout = () => {
-    // For now, we'll show a toast about backend integration
-    toast({
-      title: "Checkout Coming Soon",
-      description: "Payment integration will be available after connecting to Supabase for secure transactions.",
-    });
+    if (!user) {
+      navigate('/auth', { state: { from: { pathname: '/checkout' } } });
+      return;
+    }
+    navigate('/checkout');
   };
 
   if (items.length === 0) {
